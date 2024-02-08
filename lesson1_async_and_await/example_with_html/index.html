@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empty HTML Page with JavaScript</title>
+</head>
+<body>
+
+<script>
+
+
+
+async function loadScript(src) {
+    return new Promise(function(resolve, reject) {
+        let script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.append(script);
+        alert(`3`);
+    });
+}
+
+
+
+async function useHello(src) {
+    alert(1);
+    await loadScript(src);
+    alert(4);
+    alert(hello());
+}
+
+
+useHello("test_callback.js")
+
+</script>
+
+</body>
+</html>
