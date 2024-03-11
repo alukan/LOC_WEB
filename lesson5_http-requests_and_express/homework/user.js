@@ -1,4 +1,4 @@
-fetch('http://localhost:3000/name1')
+fetch('http://localhost:3000/names0')
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
