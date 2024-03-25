@@ -27,3 +27,4 @@ https://excalidraw.com/#json=kwK7prkDC1XFQfa7Pqs_W,T4j3J8v4yAwNROvtvsxjcA
 
 ### Link to the SQL resource
 https://www.w3schools.com/sql/default.asp
+We will learn it during our lessons, here you can just check different commands.
