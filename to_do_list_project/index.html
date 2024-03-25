@@ -30,31 +30,52 @@
       return response.json();
     }) //    \/
     .then((data) => {
-      console.log(data.tasks);
       tasks = data.tasks;
-      let list = document.getElementById("list");
+      let list = document.getElementById("list");//here
       //<li>
 
       console.log(tasks.length);
       for (let i = 0; i < tasks.length; i += 1) {
-        listItem = document.createElement("li");
+        listItem = document.createElement("li"); // li - list item
         listItem.textContent = tasks[i];
         list.appendChild(listItem);
       }
       //for or while
-      let addButton = document.getElementById("addButton");
-      let textSpace = document.getElementById("textSpace");
+
     });
 
+  let addButton = document.getElementById("addButton");
+  let textSpace = document.getElementById("textSpace");
+
+  //Add task to the list
   addButton.addEventListener("click", () => {
-    console.log(textSpace.value);
     fetch("http://localhost:3000/addTask", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json', // Set the content type of the request
       },
       body: JSON.stringify({ task: textSpace.value }),
-    });
+    }).then(response => {
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok"); //way 1
+      }
+      return response.json(); //way 2
+    }).then(data => {
+      //add logic here
+
+      let list = document.getElementById("list");
+      //textSpace.value
+      tasks.push(textSpace.value);
+      listItem = document.createElement("li"); // li - list item
+      listItem.textContent = tasks[tasks.length - 1];
+      list.appendChild(listItem);
+      // (array_name).length
+      console.log(data.message)
+    })
+      .catch(error => {
+        console.log("There was an error")
+      });
   });
 </script>
 

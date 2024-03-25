@@ -1,44 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>To Do List</title>
-  </head>
-  <body>
-    <!-- <ul> - list, <li>-list item -->
-    <h1>To Do List</h1>
-    <input type="text" placeholder="Enter something..." />
-    <button>Add</button>
-    <ul>
-      <li>task1</li>
-      <li>task2</li>
-    </ul>
-  </body>
 
-  <script>
-    //js
-    //call /tasks and get all tasks from server
-    /*
-    fetch('http://localhost:3000/password4') 
-    .then(response => {
-        // if (!response.ok) {
-        //     throw new Error('Network response was not ok');
-        // }
-        
-        return response.json();
-    })
-    .then(data => console.log(data.message))
-    .catch(error => console.error('There has been a problem with your fetch operation:', error))
+<head>
+    <title>My Page</title>
+</head>
 
-    */
-    //
-    fetch("http://localhost:3000/taks")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+<body>
+    <h1>Hello, World!</h1>
+</body>
 
-        return response.json();
-      }) //    \/
-      .then((data) => console.log(data.tasks));
-  </script>
 </html>
