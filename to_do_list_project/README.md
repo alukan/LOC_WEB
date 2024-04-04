@@ -30,4 +30,4 @@ https://www.w3schools.com/sql/default.asp
 We will learn it during our lessons, here you can just check different commands.
 
 ## Plan, part 4
-- [_] Try to take all tasks from DB (use db.run) to get something from DB you can use SELECT.
+- [ ] Try to take all tasks from DB (use db.run) to get something from DB you can use SELECT.
