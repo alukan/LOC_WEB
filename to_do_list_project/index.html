@@ -1,82 +1,106 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>To Do List</title>
+  </head>
 
-<head>
-  <title>To Do List</title>
-</head>
+  <body>
+    <!-- <ul> - list, <li>-list item -->
+    <h1>To Do List</h1>
+    <input id="textSpace" type="text" placeholder="Enter something..." />
+    <button id="addButton">Add</button>
+    <button id="deleteButton">Delete</button>
+    <ul id="list"></ul>
+  </body>
 
-<body>
-  <!-- <ul> - list, <li>-list item -->
-  <h1>To Do List</h1>
-  <input id="textSpace" type="text" placeholder="Enter something..." />
-  <button id="addButton">Add</button>
-  <ul id="list"></ul>
-</body>
+  <script>
+    //js
+    //call /tasks and get all tasks from server
+    /*
+     */
+    //
+    let tasks = []; // put here tasks from data.tasks because "data.tasks" exsits only in ".then" block
+    //
+    fetch("http://localhost:3000/tasks")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
 
-<script>
-  //js
-  //call /tasks and get all tasks from server
-  /*
-   */
-  //
-  let tasks = []; // put here tasks from data.tasks because "data.tasks" exsits only in ".then" block
-  //
-  fetch("http://localhost:3000/tasks")
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+        return response.json();
+      }) //    \/
+      .then((data) => {
+        tasks = data.tasks;
+        let list = document.getElementById("list"); //here
+        //<li>
 
-      return response.json();
-    }) //    \/
-    .then((data) => {
-      tasks = data.tasks;
-      let list = document.getElementById("list");//here
-      //<li>
-
-      console.log(tasks.length);
-      for (let i = 0; i < tasks.length; i += 1) {
-        listItem = document.createElement("li"); // li - list item
-        listItem.textContent = tasks[i];
-        list.appendChild(listItem);
-      }
-      //for or while
-
-    });
-
-  let addButton = document.getElementById("addButton");
-  let textSpace = document.getElementById("textSpace");
-
-  //Add task to the list
-  addButton.addEventListener("click", () => {
-    fetch("http://localhost:3000/addTask", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json', // Set the content type of the request
-      },
-      body: JSON.stringify({ task: textSpace.value }),
-    }).then(response => {
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok"); //way 1
-      }
-      return response.json(); //way 2
-    }).then(data => {
-      //add logic here
-
-      let list = document.getElementById("list");
-      //textSpace.value
-      tasks.push(textSpace.value);
-      listItem = document.createElement("li"); // li - list item
-      listItem.textContent = tasks[tasks.length - 1];
-      list.appendChild(listItem);
-      // (array_name).length
-      console.log(data.message)
-    })
-      .catch(error => {
-        console.log("There was an error")
+        console.log(tasks.length);
+        for (let i = 0; i < tasks.length; i += 1) {
+          listItem = document.createElement("li"); // li - list item
+          listItem.textContent = tasks[i];
+          list.appendChild(listItem);
+        }
+        //for or while
       });
-  });
-</script>
 
+    let addButton = document.getElementById("addButton");
+    let textSpace = document.getElementById("textSpace");
+    let deleteButton = document.getElementById("deleteButton");
+
+    //Add task to the list
+    addButton.addEventListener("click", () => {
+      fetch("http://localhost:3000/addTask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Set the content type of the request
+        },
+        body: JSON.stringify({ task: textSpace.value }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok"); //way 1
+          }
+          return response.json(); //way 2
+        })
+        .then((data) => {
+          //add logic here
+
+          let list = document.getElementById("list");
+          //textSpace.value
+          tasks.push(textSpace.value);
+          listItem = document.createElement("li"); // li - list item
+          listItem.textContent = tasks[tasks.length - 1];
+          list.appendChild(listItem);
+          // (array_name).length
+          console.log(data.message);
+        })
+        .catch((error) => {
+          console.log("There was an error");
+        });
+    });
+    // "string" + " " + "hello" == "string hello"
+    deleteButton.addEventListener("click", () => {
+      //http://localhost:3000/deleteTask/apple
+      fetch("http://localhost:3000/deleteTask/" + textSpace.value, {
+        // task = textSpace.value
+        method: "DELETE", // Params Delete and Get
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ task: textSpace.value }), // Body -> Post
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok"); //way 1
+          }
+          return response.json(); //way 2
+        })
+        .then((message) => {
+          console.log(message);
+        })
+        .catch((err) => {
+          console.log("There was an Error");
+        });
+    });
+  </script>
 </html>
