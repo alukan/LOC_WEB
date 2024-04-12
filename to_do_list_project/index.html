@@ -21,7 +21,7 @@
     //
     let tasks = []; // put here tasks from data.tasks because "data.tasks" exsits only in ".then" block
     //
-    fetch("http://localhost:3000/tasks")
+    fetch("http://localhost:3000/tasksDB")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -30,14 +30,15 @@
         return response.json();
       }) //    \/
       .then((data) => {
-        tasks = data.tasks;
-        let list = document.getElementById("list"); //here
+        tasks = data.tasks; //array of objects, object contains string in field task
+        let list = document.getElementById("list");
         //<li>
 
         console.log(tasks.length);
         for (let i = 0; i < tasks.length; i += 1) {
           listItem = document.createElement("li"); // li - list item
-          listItem.textContent = tasks[i];
+          //object.fieldname gives us something that is inside field with name fieldname
+          listItem.textContent = tasks[i].task; //was string, now it is object
           list.appendChild(listItem);
         }
         //for or while
@@ -49,7 +50,7 @@
 
     //Add task to the list
     addButton.addEventListener("click", () => {
-      fetch("http://localhost:3000/addTask", {
+      fetch("http://localhost:3000/addTaskDB", {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Set the content type of the request

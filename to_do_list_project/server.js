@@ -31,17 +31,35 @@ let db = new sqlite3.Database(dbName, (err) => {
   if (err) {
     console.error(err);
   } else {
+    //                string that is SQL query    function that is executed when the query is done
+    // db.run is function, (SQL,                        callback)
     // Send SQL
     db.run(
       //Method What    Checker    Name   1 field
       "CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, task TEXT)",
       (err) => {
         if (err) {
+          //here
           console.error("Error creating table", err.message);
+          return;
         } else {
           console.log("Table created or already exists");
         }
-      }
+        // db.all returns data in callback
+        db.all(
+          //db.run executes function and returns nothing or error
+          "SELECT * FROM tasks",
+          (err, rows) => {
+            // 1st param -> error, 2nd param -> data from DB
+            if (err) {
+              console.error("Error selecting all froms tasks", err.message);
+            } else {
+              console.log("Selected all from tasks", rows);
+            }
+          }
+          // SELECT * FROM db;
+        );
+      } //         all
     );
   }
 });
@@ -61,6 +79,27 @@ app.get("/tasks", (request, response) => {
   });
 });
 
+app.get("/tasksDB", (request, response) => {
+  // db.all -> checks ALL rows in db, rows is array
+  db.all(
+    //ctrl+f to find text in file
+    "SELECT task FROM tasks",
+    (err, rows) => {
+      if (err) {
+        console.error("Error selecting task from tasks", err.message);
+        response.writeHead(400);
+        response.end();
+      } else {
+        console.log("Selected all from tasks", rows);
+        // JSON
+        response.writeHead(200, { "Content-Type": "application/json" });
+        //                        field-name  what will be in this field
+        response.end(JSON.stringify({ tasks: rows }));
+      }
+    }
+  );
+});
+
 app.get("/", (request, response) => {
   response.sendFile(__dirname + "/index.html"); // C:\Users\..\project
   //C:\Users\..\project\server.js
@@ -71,18 +110,27 @@ app.post("/addTaskDB", (request, response) => {
   const newTask = request.body.task;
   if (newTask) {
     db.run(
-      // Method  What Where What-field
-      `INSERT INTO tasks (task) VALUES (?)`,
+      // Method    What Where What-field
+      `INSERT INTO tasks(task) VALUES(?)`,
       [newTask],
-      (err) => {}
+      (err) => {
+        if (!err) {
+          response.writeHead(200);
+          response.end();
+        } else {
+          console.log("Error writing to database", err.message);
+          response.writeHead(400);
+          response.end();
+        }
+      }
     );
+
     // tasks.push(newTask);
   } else {
     response.writeHead(400);
     response.end();
   }
 });
-
 app.post("/addTask", (request, response) => {
   console.log(request.body);
   const newTask = request.body.task;
