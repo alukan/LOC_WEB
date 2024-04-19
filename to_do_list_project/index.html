@@ -82,7 +82,7 @@
     // "string" + " " + "hello" == "string hello"
     deleteButton.addEventListener("click", () => {
       //http://localhost:3000/deleteTask/apple
-      fetch("http://localhost:3000/deleteTask/" + textSpace.value, {
+      fetch("http://localhost:3000/deleteTaskDB/" + textSpace.value, {
         // task = textSpace.value
         method: "DELETE", // Params Delete and Get
         headers: {

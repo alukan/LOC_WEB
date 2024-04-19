@@ -111,7 +111,7 @@ app.post("/addTaskDB", (request, response) => {
   if (newTask) {
     db.run(
       // Method    What Where What-field
-      `INSERT INTO tasks(task) VALUES(?)`,
+      `INSERT INTO tasks (task) VALUES (?)`,
       [newTask],
       (err) => {
         if (!err) {
@@ -131,6 +131,7 @@ app.post("/addTaskDB", (request, response) => {
     response.end();
   }
 });
+
 app.post("/addTask", (request, response) => {
   console.log(request.body);
   const newTask = request.body.task;
@@ -155,7 +156,7 @@ app.post("/addTask", (request, response) => {
 
 app.delete("/deleteTask/:task", (request, response) => {
   console.log("it works: 1");
-  const task = request.params.task; // Not a Number
+  const task = request.params.task; // NaN - Not a Number
 
   fs.readFile("data.txt", "utf8", (err, data) => {
     console.log("it works:2");
@@ -186,3 +187,20 @@ app.delete("/deleteTask/:task", (request, response) => {
 // app.get('/html', ((request, response) => {
 //     response.sendFile(__dirname + '/index.html');
 // }))
+
+app.delete("/deleteTaskDB/:task", (request, response) => {
+  const task = request.params.task;
+  db.run("DELETE FROM tasks WHERE task =? ", [task], (err) => {
+    if (!err) {
+      response.writeHead(200);
+      response.end();
+    } else {
+      response.writeHead(404);
+      response.end();
+    }
+  });
+
+  // request - object that contains a lot of info
+  // request.params - object inside request that contains params
+  // request.params.{name of the parameter} is field of object that contains value of {name of the parameter}
+});
