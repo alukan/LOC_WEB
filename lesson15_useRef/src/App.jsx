@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 // const logo = reqiure('./logo.svg');
 import "./App.css";
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 function App() {
   function getGoodstudents(students) {
         // for(grade of students.grades)
@@ -14,7 +14,7 @@ function App() {
   // const fruits = ["apple", "banana", "orange"];
   const [fruits, setFruits] = useState(["apple", "banana", "orange"]);
   const [counter, setCounter]= useState(0);
-  
+  const checker = useRef(0);
   // .map is a method of array that returns a new array with the results of calling a provided function on every element in the calling array.
   // const fruits2 = fruits.map( (fruit) => fruit[0] );
   // const listItems = fruits.map( (fruit) => <li>{fruit}</li>)
@@ -41,17 +41,36 @@ function App() {
 
 
   useEffect(()=>{
-    alert(counter);
-    console.log('Hello world');
+    if(checker.current > 1){
+      alert(counter);
+      console.log('Hello world');
+    }
+    else{
+      checker.current += 1;
+    }
     // setCounter(prev => prev+1)
   }, [counter]);
 
   useEffect(()=>{
-    let group = students[students.length - 1];
-    let student = group[group.length - 1];
-    alert(student.name);
+    if (counter2.current > 1){
+      let group = students[students.length - 1];
+      let student = group[group.length - 1];
+      alert(student.name);
+    }
+    else{
+      counter2.current += 1;
+    }
+    
   }, [students]);
 
+  const counter2 = useRef(0);
+  
+const count_till_10 = useRef(0);
+
+const deleteButton = useRef(0);
+
+
+  
 
   return (
     <div>
@@ -72,8 +91,19 @@ function App() {
       <p>
         {counter}</p>
         <button onClick={()=> {
+          // TODO: check if our ref is == 10, then increase the counter by 1 and make ref = 0
+          if(count_till_10.current === 10){
+            setCounter(prev =>prev+1)
+            count_till_10.current = 0;
+          }
+          else{
+            count_till_10.current += 1;
+          }
+          
           setCounter(prev =>prev+1)
         }}>Increase counter</button>
+
+       
 
 {/* [] -> {},{},{} */}
       <p>students older than age 12</p>
@@ -102,6 +132,40 @@ function App() {
       return copy
       // prev.splice(0,  students.length - 2)
       })}>Remove students</button>
+
+{/* works but is not a best practice
+<button onClick={() => setstudents(prev =>{
+          if (deleteButton.current % 15 === 0 && deleteButton.current !== 0) {
+            deleteButton.current += 1;
+            console.log("User deleted");
+            const deleteUser = [...prev]
+            deleteUser.pop()
+            return deleteUser;
+            // deleteButton.current = -1;
+          } else {
+            deleteButton.current += 1;
+            console.log("Click the button 15 times to delete the user");
+            return prev;
+          }
+          
+        })}>Delete Student</button>
+*/}
+
+<button onClick={() => {
+          if (deleteButton.current % 15 === 0) {
+            console.log("User deleted");
+            setstudents(prev => {
+              const copy = [...prev]
+              copy.pop()
+              return copy
+            })
+            // deleteButton.current = -1;
+          } else {
+            console.log("Click the button 15 times to delete the user");
+          }
+          deleteButton.current += 1;
+        }}>Delete Student</button>
+
  {/* without useEffect:
  change state -> something happend -> state is changed -> something else happend 
  whith useEffect:
