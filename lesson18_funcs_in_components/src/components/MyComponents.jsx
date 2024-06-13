@@ -1,10 +1,11 @@
 import React from "react";
+import {StyledButton, StyledInput} from '../styled/myStyles'
 //    '../App.jsx', '../example/file.jsx'
 function MyFirstButton({ buttonText = 'default', buttonAlert = 'text', myOnClick}){
 
-    return <button onClick={()=>{
+    return <StyledButton onClick={()=>{
         myOnClick('button clicked')
-    }}> {buttonText}  </button>
+    }}> {buttonText}  </StyledButton>
 }
 
 // my second button
@@ -15,7 +16,7 @@ function MySecondButton({secondButtonClick, buttonColor}){
 }
 
 function InputFeild({placeholdertext='default'}){
-    return <input type="text" placeholder={placeholdertext}/>
+    return <StyledInput type="text" placeholder={placeholdertext}/>
 }
 
 function Block({ children, text, alertText, placeHolder }){// Text is create inside App.jsx -> Block -> MyFirstButton
