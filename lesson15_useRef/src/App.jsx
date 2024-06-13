@@ -67,11 +67,8 @@ function App() {
   
 const count_till_10 = useRef(0);
 
-const deleteButton = useRef(0);
-
 
   
-
   return (
     <div>
       <p>Hello world</p>
@@ -100,10 +97,7 @@ const deleteButton = useRef(0);
             count_till_10.current += 1;
           }
           
-          setCounter(prev =>prev+1)
         }}>Increase counter</button>
-
-       
 
 {/* [] -> {},{},{} */}
       <p>students older than age 12</p>
@@ -132,40 +126,6 @@ const deleteButton = useRef(0);
       return copy
       // prev.splice(0,  students.length - 2)
       })}>Remove students</button>
-
-{/* works but is not a best practice
-<button onClick={() => setstudents(prev =>{
-          if (deleteButton.current % 15 === 0 && deleteButton.current !== 0) {
-            deleteButton.current += 1;
-            console.log("User deleted");
-            const deleteUser = [...prev]
-            deleteUser.pop()
-            return deleteUser;
-            // deleteButton.current = -1;
-          } else {
-            deleteButton.current += 1;
-            console.log("Click the button 15 times to delete the user");
-            return prev;
-          }
-          
-        })}>Delete Student</button>
-*/}
-
-<button onClick={() => {
-          if (deleteButton.current % 15 === 0) {
-            console.log("User deleted");
-            setstudents(prev => {
-              const copy = [...prev]
-              copy.pop()
-              return copy
-            })
-            // deleteButton.current = -1;
-          } else {
-            console.log("Click the button 15 times to delete the user");
-          }
-          deleteButton.current += 1;
-        }}>Delete Student</button>
-
  {/* without useEffect:
  change state -> something happend -> state is changed -> something else happend 
  whith useEffect:
