@@ -8,6 +8,11 @@ function App() {
      for(let i = 0; i < students.grades.length; i++){
       if (students.grades[i] === 'A'){
         return <li key={students.name}>{students.name}</li>
+  function getGoodstudents(students) {
+        // for(grade of students.grades)
+     for(let i = 0; i < students.grades.length; i++){
+      if (students.grades[i] === 'A'){
+        return <li key={students.name}>{students.name}</li>
       }
     }
   }
@@ -36,6 +41,7 @@ function App() {
     ],
 
   ];
+  const [students, setstudents] = useState(groups);
   const [students, setstudents] = useState(groups);
 
 
@@ -101,15 +107,21 @@ const count_till_10 = useRef(0);
 
 {/* [] -> {},{},{} */}
       <p>students older than age 12</p>
+      <p>students older than age 12</p>
       {/* <ul>{groups.map((groups) => groups.age > 12 ? <li key={groups.name}>{groups.name} </li> : null)}</ul> */}
       {/* [] -> [][][] -> {}  */}
       <ul>
+        {students.map((group) => {
         {students.map((group) => {
           return group.map((student) => student.age > 12 ? <li key= {student.name}>{student.name}</li>: null)
         })}
       </ul>
       <p>students That have an A grade</p>
+      <p>students That have an A grade</p>
       <ul>
+        {students.map((group) =>{// 1 == '1' true, 1 === 1 true, 1 === '1' false
+          // return group.map((students) => getGoodstudents(students))
+          return group.map(getGoodstudents)
         {students.map((group) =>{// 1 == '1' true, 1 === 1 true, 1 === '1' false
           // return group.map((students) => getGoodstudents(students))
           return group.map(getGoodstudents)
@@ -117,13 +129,19 @@ const count_till_10 = useRef(0);
       </ul>
       {/* students.splice()
         students = students.splice()
+      {/* students.splice()
+        students = students.splice()
       */}
+      <button onClick={() => setstudents(prev => [...prev,  [{name: "Ben", age: 15, grades: ["A", "C", "C"]}] ])}>Add New students</button>
+      <button onClick={() => setstudents(prev => {
       <button onClick={() => setstudents(prev => [...prev,  [{name: "Ben", age: 15, grades: ["A", "C", "C"]}] ])}>Add New students</button>
       <button onClick={() => setstudents(prev => {
       // copy
       const copy = [...prev]
       copy.pop()
       return copy
+      // prev.splice(0,  students.length - 2)
+      })}>Remove students</button>
       // prev.splice(0,  students.length - 2)
       })}>Remove students</button>
  {/* without useEffect:
