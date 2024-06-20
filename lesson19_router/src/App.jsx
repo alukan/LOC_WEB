@@ -9,6 +9,7 @@ import Page1 from './pages/page1'
 import SecondPage from './pages/page2'
 import ThirdPage from './pages/page3'
 
+
 function App() {
   return <BrowserRouter>
     <Routes>
