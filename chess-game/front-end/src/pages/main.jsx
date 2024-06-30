@@ -5,7 +5,9 @@ function Main(){
         <header style={{alignItems: "center"}}>
         <h1 >Chess Game</h1>
         </header>
+        
     </div>
+    
 }
 
 export default Main;
