@@ -1,9 +1,30 @@
 .chessboard-container {
-  background-image: url("../../public/chess-board.png");
+  background-image: url("../../public/chess_board.png");
   background-size: cover;
   width: 600px;
   height: 600px;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
+}
+
+.cell-piece {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.selected {
+  background-color: green;
+}
+
+.piece {
+  cursor: pointer;
 }
