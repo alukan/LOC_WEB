@@ -72,13 +72,42 @@ function Game() {
       if(row != selectedRow && cell != selectedCell){
         return;
       }
+      else{
+        if(row == selectedRow){
+          if(cell > selectedCell){
+            for(let i = selectedCell + 1; i < cell; i++){
+              if(board[selectedRow][i] != null)
+                return;
+            }
+          }
+          else{
+
+          }   
+        }
+      }
     }
       
     if (piece.toUpperCase() == 'B')
       if(row + cell != selectedRow + selectedCell &&  row - cell != selectedRow - selectedCell)
         return;
     
-    
+    if (piece.toUpperCase() == 'N')
+      if((Math.abs(row - selectedRow) !=2  || Math.abs(cell - selectedCell)!=1) &&
+     (Math.abs(row - selectedRow) !=1 || Math.abs(cell - selectedCell) != 2))
+        return;
+        
+    if (piece.toUpperCase() == 'Q')
+      if(row != selectedRow && cell != selectedCell && row + cell != selectedRow + selectedCell &&  row - cell != selectedRow - selectedCell)
+        return;
+      
+    if (piece.toUpperCase() == 'K') // Math.abs 2 - 1 == 1 - 2
+      if(Math.abs(row - selectedRow) >= 2  || Math.abs(cell - selectedCell) >=2)
+      //check that there is no green dot
+        return;
+
+    if ( piece.toUpperCase() == 'P')
+      if (cell != selectedCell  )
+        return;
 
     const copyBoard = [...board]; // ... - takes elements, [] - creates new array
     
