@@ -69,27 +69,41 @@ function Game() {
     const piece = board[selectedRow][selectedCell];// board[3][4]
 
     if(piece.toUpperCase() == 'R'){
-      if(row != selectedRow && cell != selectedCell){
-        return;
-      }
-      else{
         if(row == selectedRow){
-          if(cell > selectedCell){
-            for(let i = selectedCell + 1; i < cell; i++){
+            for(let i = Math.min(selectedCell, cell) + 1; i < Math.max(selectedCell, cell); i++){
               if(board[selectedRow][i] != null)
                 return;
-            }
-          }
-          else{
-
-          }   
+            } 
         }
-      }
+        else if (cell === selectedCell){
+            for( let i = Math.min(selectedRow, row) +1; i < Math.max(selectedRow, row); i++){ 
+              if(board[i][selectedCell] != null)
+                return;
+          }
+        }
+        else{
+          return;
+        }
     }
       
     if (piece.toUpperCase() == 'B')
-      if(row + cell != selectedRow + selectedCell &&  row - cell != selectedRow - selectedCell)
+      if(row - cell == selectedRow - selectedCell){
+        for(let i = 1; Math.min(row, selectedRow) + i < Math.max(row, selectedRow); i++){
+          if(board[Math.min(row, selectedRow) + i][Math.min(cell, selectedCell) + i] != null)
+            return;
+        }
+      }
+      else if(row + cell == selectedRow + selectedCell){
+        for(let i = 1; Math.max(row, selectedRow) - i > Math.min(row, selectedRow); i++){
+          if(board[Math.max(row, selectedRow) - i][Math.min(cell, selectedCell) + i] != null)
+            return;
+        }
+      }
+      else{
         return;
+      }
+      
+      
     
     if (piece.toUpperCase() == 'N')
       if((Math.abs(row - selectedRow) !=2  || Math.abs(cell - selectedCell)!=1) &&
@@ -97,8 +111,33 @@ function Game() {
         return;
         
     if (piece.toUpperCase() == 'Q')
-      if(row != selectedRow && cell != selectedCell && row + cell != selectedRow + selectedCell &&  row - cell != selectedRow - selectedCell)
+      if(row == selectedRow){
+        for(let i = Math.min(selectedCell, cell) + 1; i < Math.max(selectedCell, cell); i++){
+          if(board[selectedRow][i] != null)
+            return;
+        } 
+      }
+      else if (cell === selectedCell){
+          for( let i = Math.min(selectedRow, row) +1; i < Math.max(selectedRow, row); i++){ 
+            if(board[i][selectedCell] != null)
+              return;
+        }
+      }
+      else if(row - cell == selectedRow - selectedCell){
+        for(let i = 1; Math.min(row, selectedRow) + i < Math.max(row, selectedRow); i++){
+          if(board[Math.min(row, selectedRow) + i][Math.min(cell, selectedCell) + i] != null)
+            return;
+        }
+      }
+      else if(row + cell == selectedRow + selectedCell){
+        for(let i = 1; Math.max(row, selectedRow) - i > Math.min(row, selectedRow); i++){
+          if(board[Math.max(row, selectedRow) - i][Math.min(cell, selectedCell) + i] != null)
+            return;
+        }
+      }
+      else{
         return;
+      }
       
     if (piece.toUpperCase() == 'K') // Math.abs 2 - 1 == 1 - 2
       if(Math.abs(row - selectedRow) >= 2  || Math.abs(cell - selectedCell) >=2)
@@ -106,7 +145,7 @@ function Game() {
         return;
 
     if ( piece.toUpperCase() == 'P')
-      if (cell != selectedCell  )
+      if (cell != selectedCell)
         return;
 
     const copyBoard = [...board]; // ... - takes elements, [] - creates new array
