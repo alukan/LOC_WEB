@@ -144,9 +144,29 @@ function Game() {
       //check that there is no green dot
         return;
 
-    if ( piece.toUpperCase() == 'P')
-      if (cell != selectedCell)
-        return;
+    if ( piece.toUpperCase() == 'P'){
+      console.log(currentTurn)
+      const checkingColor = ( currentTurn === "white" ? -1 : 1)
+      console.log("row: ", row,"checking color:", checkingColor,"selected Row:", selectedRow)
+      if(row - checkingColor === selectedRow){
+        if(
+          !(board[row][cell] == null && cell == selectedCell) &&
+          !(board[row][cell] != null && Math.abs(cell - selectedCell) == 1)){
+          console.log(123)
+          return
+        }
+      }
+      else if(selectedRow == 6 && currentTurn == "white"){
+        if(!(row == 4 && cell == selectedCell && board[row][cell] == null && board[row+1][cell] == null))
+          return
+      }
+      else{
+        console.log(321)
+        return
+      }
+    }
+      // var == 1 if color is white and -1 if black
+      
 
     const copyBoard = [...board]; // ... - takes elements, [] - creates new array
     
