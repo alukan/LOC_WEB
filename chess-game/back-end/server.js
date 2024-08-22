@@ -5,6 +5,8 @@ const { Server } = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
+let board;
+let clients = [];
 // func(request, response)
 
 app.get("/", (req, res) => {
@@ -13,7 +15,9 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   console.log("connected");
+  clients.push(socket);
   socket.emit("message", "Welcome, to my server");
+  socket.emit("board", board);
 
   socket.on("message", (msg) => {
     console.log("Received message", msg);
@@ -21,6 +25,16 @@ io.on("connection", (socket) => {
 
   socket.on("disconect", () => {
     console.log("A client disconnected");
+  });
+
+  socket.on("move", (recieveBoard) => {
+    // for (let i = 0; i<clients.length();i++){
+    //   client = clients[i]
+    // }
+    board = recieveBoard;
+    clients.forEach((client) => {
+      if (client !== socket) client.emit("move", recieveBoard);
+    });
   });
 });
 
