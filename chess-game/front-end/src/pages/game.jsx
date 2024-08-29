@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef} from "react";
 import "./game.css";
+import { io } from "socket.io-client"
 
 const initialBoard = [
   ["R", "N", "B", "Q", "K", "B", "N", "R"], //0 indexes
@@ -35,6 +36,24 @@ function Game() {
   const [board, setBoard] = useState(initialBoard);
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [currentTurn, setCurrentTurn] = useState("white");
+  const socketIO = useRef(null)
+  // socketIO.current 
+  useEffect(()=>{
+    socketIO.current = io("http://localhost:3001")
+    
+    socketIO.current.on("connect" , () => {
+      console.log("Connected to the server");
+    });
+
+    socketIO.current.on("move", (recieveBoard)=>{
+      setBoard(recieveBoard);
+      setCurrentTurn(currentTurn === "white" ? "black": "white")
+    })
+
+    socketIO.current.on("disconnect", () => {
+      console.log("Disconnected from the server");
+    });
+  })
 
   const handleCellClick = (row, cell) => {
     const piece = board[row][cell];
@@ -180,8 +199,13 @@ function Game() {
     copyBoard[selectedRow][selectedCell] = null;
     
     setBoard(copyBoard) // board = copyBoard
+
+    // send to server
+    socketIO.current.emit("move", copyBoard)
+
     //delete a selection
     setSelectedPiece(null);
+    
     if (currentTurn === 'white'){
       setCurrentTurn('black');
     }
