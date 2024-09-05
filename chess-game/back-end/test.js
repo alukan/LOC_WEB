@@ -4,7 +4,7 @@ const io = require("socket.io-client");
 const socket = io("http://localhost:3001");
 
 // Handle connection event
-socket.on("connect", () => {
+socket.on("connect" , () => {
   console.log("Connected to the server");
 });
 

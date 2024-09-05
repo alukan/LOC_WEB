@@ -45,6 +45,10 @@ function Game() {
       console.log("Connected to the server");
     });
 
+    socketIO.current.on("board", (recieveBoard)=>{
+        setBoard(recieveBoard)
+    })
+
     socketIO.current.on("move", (recieveBoard)=>{
       setBoard(recieveBoard);
       setCurrentTurn(currentTurn === "white" ? "black": "white")
@@ -199,19 +203,20 @@ function Game() {
     copyBoard[selectedRow][selectedCell] = null;
     
     setBoard(copyBoard) // board = copyBoard
-
-    // send to server
-    socketIO.current.emit("move", copyBoard)
-
+    
     //delete a selection
     setSelectedPiece(null);
     
-    if (currentTurn === 'white'){
-      setCurrentTurn('black');
+    const newCurrentTurn = currentTurn === "black" ? "white" :  "black";
+    
+    const data = {
+      board: copyBoard,
+      currentTurn: newCurrentTurn,
     }
-    else{
-      setCurrentTurn('white');
-    }
+    // send to server
+    socketIO.current.emit("move", data)
+
+    setCurrentTurn(newCurrentTurn)
     
   };
 
