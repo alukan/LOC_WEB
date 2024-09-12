@@ -46,18 +46,25 @@ function Game() {
     });
 
     socketIO.current.on("board", (recieveBoard)=>{
-        setBoard(recieveBoard)
+      console.log(recieveBoard)
+      if(recieveBoard !== null){
+        setBoard(recieveBoard.board)
+        setCurrentTurn(recieveBoard.currentTurn)
+      }
     })
 
     socketIO.current.on("move", (recieveBoard)=>{
-      setBoard(recieveBoard);
-      setCurrentTurn(currentTurn === "white" ? "black": "white")
+      console.log(recieveBoard)
+      if(recieveBoard !== null){
+        setBoard(recieveBoard.board)
+        setCurrentTurn(recieveBoard.currentTurn)
+      }
     })
 
     socketIO.current.on("disconnect", () => {
       console.log("Disconnected from the server");
     });
-  })
+  }, [])
 
   const handleCellClick = (row, cell) => {
     const piece = board[row][cell];
@@ -213,6 +220,12 @@ function Game() {
       board: copyBoard,
       currentTurn: newCurrentTurn,
     }
+    // copyBoard is sent. recieavedBoard = copyBoard
+    // when recieve we do board = recieavedBoard, it is the same as board = copyBoard
+
+    // now we send data object that has field copyBoard
+    // when recieave board = data, now we need to extract copyBoard from data
+    
     // send to server
     socketIO.current.emit("move", data)
 
