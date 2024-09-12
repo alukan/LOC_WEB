@@ -14,8 +14,39 @@ const io = new Server(server, {
 
 let board;
 let clients = [];
-// func(request, response)
 
+/* class MyClass {
+  constructor() { ... } -> __init__
+  method1() { ... }
+  method2() { ... }
+  method3() { ... }
+  to access variable, this.name
+  ...
+}*/
+
+class Room {
+  constructor(roomId) {
+    this.roomId = roomId;
+    this.board = null;
+    this.clients = [];
+  }
+
+  saveBoard(board) {
+    this.board = board;
+  }
+
+  saveClient(client) {
+    this.clients.push(client);
+  }
+
+  move() {
+    this.clients.forEach((client) => {
+      client.emit("move", this.board);
+    });
+  }
+}
+
+// func(request, response)
 app.get("/", (req, res) => {
   res.status(200).send("Hi, its working, ");
 });
