@@ -1,6 +1,7 @@
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
+const { v4: uuidv4 } = require("uuid");
 
 const app = express();
 const server = http.createServer(app);
@@ -14,6 +15,7 @@ const io = new Server(server, {
 
 let board;
 let clients = [];
+let rooms = {};
 
 /* class MyClass {
   constructor() { ... } -> __init__
@@ -56,6 +58,22 @@ io.on("connection", (socket) => {
   clients.push(socket);
   socket.emit("message", "Welcome, to my server");
   socket.emit("board", board);
+  let room_id;
+
+  socket.on("create-room", () => {
+    id = uuidv4();
+    room_id = id;
+    const room = new Room(id);
+    rooms[id] = room;
+  });
+
+  // every time we recieve event "join"
+  // same as joinFunction(), every time we recieve event "join" -> call function joinFunction(id)
+  socket.on("join", (id) => {
+    if (rooms[id] !== undefined) rooms[id].saveClient(socket);
+    room_id = id;
+  });
+  // id is already lost, but room_id exists
 
   socket.on("message", (msg) => {
     console.log("Received message", msg);
@@ -69,8 +87,9 @@ io.on("connection", (socket) => {
     // for (let i = 0; i<clients.length();i++){
     //   client = clients[i]
     // }
-    board = recieveBoard;
-    clients.forEach((client) => {
+    rooms[room_id].board = recieveBoard;
+
+    rooms[room_id].clients.forEach((client) => {
       if (client !== socket) client.emit("move", recieveBoard);
     });
   });

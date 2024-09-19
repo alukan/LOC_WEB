@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef} from "react";
+import { useParams } from "react-router-dom"
 import "./game.css";
 import { io } from "socket.io-client"
 
@@ -37,6 +38,8 @@ function Game() {
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [currentTurn, setCurrentTurn] = useState("white");
   const socketIO = useRef(null)
+  const params = useParams()
+  console.log(params.game_id)
   // socketIO.current 
   useEffect(()=>{
     socketIO.current = io("http://localhost:3001")
@@ -65,6 +68,8 @@ function Game() {
       console.log("Disconnected from the server");
     });
   }, [])
+
+  // /game/r1344 - path parameters
 
   const handleCellClick = (row, cell) => {
     const piece = board[row][cell];
