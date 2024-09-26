@@ -39,13 +39,13 @@ function Game() {
   const [currentTurn, setCurrentTurn] = useState("white");
   const socketIO = useRef(null)
   const params = useParams()
-  console.log(params.game_id)
   // socketIO.current 
   useEffect(()=>{
     socketIO.current = io("http://localhost:3001")
     
     socketIO.current.on("connect" , () => {
       console.log("Connected to the server");
+      socketIO.current.emit("join", (params.game_id))
     });
 
     socketIO.current.on("board", (recieveBoard)=>{
