@@ -37,6 +37,7 @@ function Game() {
   const [board, setBoard] = useState(initialBoard);
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [currentTurn, setCurrentTurn] = useState("white");
+  const [playerColor, setPlayerColor] = useState(null);
   const socketIO = useRef(null)
   const params = useParams()
   // socketIO.current 
@@ -86,7 +87,6 @@ function Game() {
       else {
         movePiece(row, cell);
       }
-      //
     }
     // piece is not null (non empty), color of a piece is the same as current turn
     else if (piece != null && pieceColor === currentTurn) {

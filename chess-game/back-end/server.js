@@ -33,6 +33,8 @@ class Room {
     this.roomId = roomId;
     this.board = null;
     this.clients = [];
+    this.colors = ["black", "white"];
+    this.playerColors = {};
   }
 
   saveBoard(board) {
