@@ -42,7 +42,7 @@ function Game() {
   const params = useParams()
   // socketIO.current 
   useEffect(()=>{
-    socketIO.current = io("http://localhost:3001")
+    socketIO.current = io("https://chess-game-back-end-7k5r.onrender.com")
     
     socketIO.current.on("connect" , () => {
       console.log("Connected to the server");

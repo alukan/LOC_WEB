@@ -6,7 +6,7 @@ function Main(){
 
     function CreateRoom(){
         // navigate("/game/1") Example
-        fetch("http://localhost:3001/create-room", {
+        fetch("https://chess-game-back-end-7k5r.onrender.com/create-room", {
             method: 'POST'
         })
         .then((response)=>response.json())
