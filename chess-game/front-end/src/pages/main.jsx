@@ -6,7 +6,7 @@ function Main(){
 
     function CreateRoom(){
         // navigate("/game/1") Example
-        fetch("https://chess-game-back-end-7k5r.onrender.com/create-room", {
+        fetch(process.env.REACT_APP_BACKEND_URL + "/create-room", {
             method: 'POST'
         })
         .then((response)=>response.json())

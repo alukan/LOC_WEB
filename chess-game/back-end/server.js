@@ -15,7 +15,6 @@ const io = new Server(server, {
   },
 });
 
-let board;
 let clients = [];
 let rooms = {};
 
@@ -72,6 +71,7 @@ io.on("connection", (socket) => {
   clients.push(socket);
   socket.emit("message", "Welcome, to my server");
   let room_id;
+  let color;
 
   // every time we recieve event "join"
   // same as joinFunction(), every time we recieve event "join" -> call function joinFunction(id)
@@ -79,17 +79,29 @@ io.on("connection", (socket) => {
     if (rooms[id] !== undefined) {
       rooms[id].saveClient(socket);
       room_id = id;
+
+      color = rooms[id].colors.pop();
+      console.log("color: ", color);
       socket.emit("board", rooms[room_id].board);
+      socket.emit("color", color);
     }
   });
+
+  socket.on("getColor", () => {
+    console.log("Your color is:", color);
+  });
+
   // id is already lost, but room_id exists
 
   socket.on("message", (msg) => {
     console.log("Received message", msg);
   });
 
-  socket.on("disconect", () => {
+  socket.on("disconnect", () => {
     console.log("A client disconnected");
+    if (rooms[room_id]) {
+      rooms[room_id].colors.push(color);
+    }
   });
 
   socket.on("move", (recieveBoard) => {

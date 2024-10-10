@@ -42,7 +42,8 @@ function Game() {
   const params = useParams()
   // socketIO.current 
   useEffect(()=>{
-    socketIO.current = io("https://chess-game-back-end-7k5r.onrender.com")
+    
+    socketIO.current = io(process.env.REACT_APP_BACKEND_URL+"/")
     
     socketIO.current.on("connect" , () => {
       console.log("Connected to the server");
@@ -54,6 +55,13 @@ function Game() {
       if(recieveBoard !== null){
         setBoard(recieveBoard.board)
         setCurrentTurn(recieveBoard.currentTurn)
+      }
+    })
+
+    socketIO.current.on("color", (color)=>{
+      console.log(color)
+      if(color !== null){
+        setPlayerColor(color)
       }
     })
 
