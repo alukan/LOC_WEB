@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef} from "react";
-import { useParams } from "react-router-dom"
+import { useParams, useSearchParams } from "react-router-dom"
 import "./game.css";
 import { io } from "socket.io-client"
 
@@ -39,7 +39,11 @@ function Game() {
   const [currentTurn, setCurrentTurn] = useState("white");
   const [playerColor, setPlayerColor] = useState(null);
   const socketIO = useRef(null)
+
+  // query params /game/sdkjhgfjadshg/somethingelse
+  // search params /something?color=white&day=monday
   const params = useParams()
+  const [searchParams] = useSearchParams()
   // socketIO.current 
   useEffect(()=>{
     
@@ -47,7 +51,8 @@ function Game() {
     
     socketIO.current.on("connect" , () => {
       console.log("Connected to the server");
-      socketIO.current.emit("join", (params.game_id))
+      const color = searchParams.get("color")
+      socketIO.current.emit("join", {id: params.game_id, color: color})
     });
 
     socketIO.current.on("board", (recieveBoard)=>{
@@ -61,7 +66,7 @@ function Game() {
     socketIO.current.on("color", (color)=>{
       console.log(color)
       if(color !== null){
-        setPlayerColor(color)
+        setPlayerColor(color);
       }
     })
 
@@ -81,6 +86,9 @@ function Game() {
   // /game/r1344 - path parameters
 
   const handleCellClick = (row, cell) => {
+    if(currentTurn !== playerColor){
+      return;
+    }
     const piece = board[row][cell];
 
     // a -> A, A->A

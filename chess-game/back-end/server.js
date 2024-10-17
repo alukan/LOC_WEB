@@ -75,14 +75,25 @@ io.on("connection", (socket) => {
 
   // every time we recieve event "join"
   // same as joinFunction(), every time we recieve event "join" -> call function joinFunction(id)
-  socket.on("join", (id) => {
-    if (rooms[id] !== undefined) {
-      rooms[id].saveClient(socket);
-      room_id = id;
+  socket.on("join", (data) => {
+    if (rooms[data.id] !== undefined) {
+      rooms[data.id].saveClient(socket);
+      room_id = data.id;
 
-      color = rooms[id].colors.pop();
       console.log("color: ", color);
       socket.emit("board", rooms[room_id].board);
+
+      //starting value;    condition;                  what to do on each step, i++ is the same as i+=1
+      for (let i = 0; i < rooms[data.id].colors.length; i++) {
+        if (data.color == rooms[data.id].colors[i]) {
+          color = data.color;
+          rooms[data.id].colors = rooms[data.id].colors.filter(
+            (element, index) => index !== i
+          );
+          break;
+        }
+      }
+
       socket.emit("color", color);
     }
   });
@@ -99,7 +110,7 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("A client disconnected");
-    if (rooms[room_id]) {
+    if (rooms[room_id] && color) {
       rooms[room_id].colors.push(color);
     }
   });
