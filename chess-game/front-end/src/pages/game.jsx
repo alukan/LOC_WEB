@@ -255,6 +255,7 @@ function Game() {
   };
 
   return (
+    <div>
     <div className="chessboard-container">
       {board.map((row, rowIndex) =>
         row.map((cell, cellIndex) => (
@@ -284,6 +285,10 @@ function Game() {
           </div>
         ))
       )}
+    </div>
+    {/*"" - false, null - false, 0 - false, undefinied - false. any non empty str - True */}
+    {playerColor ? <span>You color is {playerColor}</span> : <span>You are a spectator</span>}
+    
     </div>
   );
 }
