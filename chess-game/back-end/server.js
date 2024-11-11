@@ -20,7 +20,16 @@ const io = new Server(server, {
   },
 });
 
-connectionDB(process.env.MONGO_URI);
+connectionDB(process.env.MONGO_URI).then(() => {
+  RoomData.find({})
+    .exec()
+    .then((room_data) => {
+      for (let i in room_data) {
+        const room = new Room(room_data[i].roomId, room_data[i].board);
+        rooms[room_data[i].roomId] = room;
+      }
+    });
+});
 
 let clients = [];
 let rooms = {};
@@ -35,9 +44,9 @@ let rooms = {};
 }*/
 
 class Room {
-  constructor(roomId) {
+  constructor(roomId, board = null) {
     this.roomId = roomId;
-    this.board = null;
+    this.board = board;
     this.clients = [];
     this.colors = ["black", "white"];
   }
@@ -70,11 +79,10 @@ class Room {
     // Update - Delete + Create
     try {
       RoomData.findOneAndUpdate(
-        { roomId: this.roomId }, // find
+        { roomId: this.roomId }, // condition
         { board: this.board }, // what to update
         { upsert: true } // options
-      );
-      console.log("Updated");
+      ).exec();
     } catch (err) {
       console.log(err);
     }
