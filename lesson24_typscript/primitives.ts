@@ -16,6 +16,8 @@ let nanValue: number = NaN; // not a number
 // Arrays
 let nums: number[] = [1, 2, 3];
 
+let array: (number | string)[][] = [[1, "2", 3], ["apple"]];
+
 // Tuple
 type Point = [number, number, string];
 
@@ -42,11 +44,17 @@ let obj: Person = {
 };
 
 // functions
-function sum(a: number, b: number): number | string | void {
+function sum(a: number, b: number): number | void | Person {
   console.log(a + b);
   if (a > b) return a + b;
   else if (a == b) return;
-  else return "sorry";
+  else {
+    let person = {
+      name: "John",
+      age: 25,
+    };
+    return person;
+  }
 }
 
 // type union
@@ -72,8 +80,8 @@ let unknownValue: unknown = {
 sum(3, (unknownValue as Person).age);
 
 // as const
-const arr = [1, 2, 3];
-
+const arr = [1, 2, 3] as const;
+// arr[0] = 3;  // error
 console.log(arr);
 
 // not null assertion
