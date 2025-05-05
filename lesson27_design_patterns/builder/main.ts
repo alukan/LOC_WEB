@@ -37,7 +37,11 @@ function findUserNoBuilder(
         "SELECT name, age FROM users WHERE age > 18 ORDER BY age DESC LIMIT 10";
     }
   } else {
-    query = "SELECT name, age FROM users ORDER BY age DESC LIMIT 10";
+    if (order === "ASC") {
+      query = "SELECT name, age FROM users ORDER BY age ASC LIMIT 10";
+    } else {
+      query = "SELECT name, age FROM users ORDER BY age DESC LIMIT 10";
+    }
   }
   return query;
 }
